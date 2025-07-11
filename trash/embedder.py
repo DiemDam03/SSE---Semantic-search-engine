@@ -2,10 +2,10 @@ from sentence_transformers import SentenceTransformer
 import numpy as np
 import pandas as pd
 import faiss
-import dataproc
+import data_handler
 
 model = SentenceTransformer("all-MiniLM-L6-v2") 
-corpus = dataproc.data_handler()
+corpus = data_handler.data_proc()
 
 # sbert embeddings
 embeddings = model.encode(corpus, 

@@ -25,7 +25,9 @@ query_embedding = model.encode(query,
                                 convert_to_numpy=True, 
                                 device='cpu')
 
-model.similarity(emb, query_embedding)
+# model.similarity(emb, query_embedding)
+
+# cosine similarity search
 
 top_k = 10
 D, I = index.search(query_embedding.reshape(1, -1), k=top_k) 
