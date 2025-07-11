@@ -16,7 +16,6 @@ def search():
         
         # Convert data to list of (sentence, vector) tuples
         database = [(sentence, vector) for sentence, vector in data.items()]
-        print("Sample sentence from database:", list(data.keys())[0], type(list(data.keys())[0]))
 
         query_tokens = data_handler.preprocessing(query)
         if not query_tokens:
@@ -25,12 +24,16 @@ def search():
         # Tạo vector cho query
         query_vector = data_handler.query_handling(query_tokens, database)
         
-        # Tìm kiếm similarity
-        top_k = similarity_searcher.similarity_search_top_k(database, query_vector, 10)
+        # Tìm kiếm similarity - returns list of tuples (sentence, similarity_score)
+        top_k_results = similarity_searcher.similarity_search_top_k(database, query_vector, 10)
         
-        # Format results
+        # Format results - extract sentence from tuple
         results = []
-        for sentence in top_k:
+        for sentence_tuple in top_k_results:
+            # sentence_tuple is (sentence, similarity_score)
+            sentence = sentence_tuple[0]  # Get the sentence from the tuple
+            similarity_score = sentence_tuple[1]  # Get the similarity score
+            
             parts = sentence.split(' | ')
             title = parts[0] if len(parts) > 0 else sentence
             genres = parts[1] if len(parts) > 1 else "Unknown"
@@ -38,6 +41,7 @@ def search():
             results.append({
                 "title": title,
                 "genres": genres,
+                "similarity_score": float(similarity_score)  # Add similarity score to results
                 })
         
         return jsonify({"results": results})
@@ -65,4 +69,3 @@ if __name__ == '__main__':
     
     print("Starting Flask app...")
     app.run(host='0.0.0.0', port=5000, debug=True)
-
