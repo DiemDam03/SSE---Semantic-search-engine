@@ -43,7 +43,7 @@ def search():
                 "genres": genres,
                 "similarity_score": float(similarity_score)  # Add similarity score to results
                 })
-        
+
         return jsonify({"results": results})
         
     except Exception as e:
